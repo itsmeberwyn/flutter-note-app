@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:note_app/screens/home.screen.dart';
 
 class LoginPage extends StatefulWidget {
@@ -23,17 +24,41 @@ class _LoginPageState extends State<LoginPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(
+              height: 30,
+            ),
+            Center(
+              child: SizedBox(
+                width: 110,
+                height: MediaQuery.of(context).size.height / 5,
+                child: const Image(
+                  width: 10,
+                  height: 10,
+                  image: AssetImage('images/noteappsample.png'),
+                ),
+              ),
+            ),
+            KeyboardVisibilityBuilder(
+              builder: (context, isKeyboardVisible) {
+                if (isKeyboardVisible) {
+                  return const SizedBox(height: 0);
+                }
+                return const SizedBox(height: 70);
+              },
+            ),
             RichText(
               text: const TextSpan(
                 text: "Log in to Mnemonist",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Poppins',
                 ),
               ),
             ),
-            const SizedBox(
-              height: 40,
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 50,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 10),
