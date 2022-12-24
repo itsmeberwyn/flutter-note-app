@@ -68,12 +68,13 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 decoration: InputDecoration(
                   labelText: "Email",
-                  labelStyle: MaterialStateTextStyle.resolveWith((states) {
-                    Color color = states.contains(MaterialState.focused)
-                        ? Colors.blue
-                        : Colors.white38;
-                    return TextStyle(color: color);
-                  }),
+                  labelStyle: MaterialStateTextStyle.resolveWith(
+                    (states) => TextStyle(
+                      color: states.contains(MaterialState.focused)
+                          ? Colors.blue
+                          : Colors.white38,
+                    ),
+                  ),
                   hintText: "email@gmail.com",
                   hintStyle: const TextStyle(color: Colors.white38),
                   border: const OutlineInputBorder(),
