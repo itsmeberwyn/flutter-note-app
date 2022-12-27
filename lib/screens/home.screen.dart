@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:note_app/utils/global_colors.dart';
+import 'package:note_app/widgets/task_model2_widget.dart';
+import 'package:note_app/widgets/task_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,113 +19,55 @@ class _HomeScreenState extends State<HomeScreen> {
         automaticallyImplyLeading: false,
         title: const Text("Mnemonist"),
       ),
-      body: Container(
-        color: Colors.black,
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 238, 122, 84),
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(20),
-                        bottomRight: Radius.circular(20),
-                        bottomLeft: Radius.circular(20),
+      body: CustomScrollView(
+        slivers: [
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (BuildContext context, int index) {
+                return Container(
+                  color: Colors.black,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: const [
+                            TaskWidget2(
+                              backgroundColor: GlobalColors.taskColor,
+                              title: "Plan for today",
+                            ),
+                            TaskWidget2(
+                              backgroundColor: GlobalColors.task2Color,
+                              title: "Plan for tommorow",
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 20, horizontal: 10),
-                    width: (MediaQuery.of(context).size.width / 2) - 10,
-                    height: 200,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          child: Text(
-                            "Plan for today",
-                            style: TextStyle(
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.bold),
-                          ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Column(
+                          children: const [
+                            TaskWidget(),
+                            TaskWidget(),
+                            TaskWidget(),
+                            TaskWidget(),
+                            TaskWidget(),
+                            TaskWidget(),
+                            TaskWidget(),
+                            TaskWidget(),
+                          ],
                         ),
-                        Material(
-                          color: const Color.fromARGB(255, 238, 122, 84),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(50),
-                          ),
-                          child: ListTile(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(50),
-                              ),
-                            ),
-                            tileColor: const Color.fromARGB(28, 0, 0, 0),
-                            textColor: Colors.white,
-                            iconColor: Colors.white,
-                            title: const Text('Task 1'),
-                            leading: Radio(
-                              value: "Sample",
-                              groupValue: "",
-                              onChanged: (String? value) {
-                                setState(() {});
-                              },
-                            ),
-                          ),
-                        ),
-                        Material(
-                          color: const Color.fromARGB(255, 238, 122, 84),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(50),
-                          ),
-                          child: ListTile(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(50),
-                              ),
-                            ),
-                            tileColor: const Color.fromARGB(28, 0, 0, 0),
-                            textColor: Colors.white,
-                            iconColor: Colors.white,
-                            title: const Text('Task 2'),
-                            leading: Radio(
-                              value: "Sample",
-                              groupValue: "",
-                              onChanged: (String? value) {
-                                setState(() {});
-                              },
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    decoration: const BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(20),
-                        topRight: Radius.circular(20),
-                        bottomLeft: Radius.circular(20),
                       ),
-                    ),
-                    padding: const EdgeInsets.all(20),
-                    width: (MediaQuery.of(context).size.width / 2) - 10,
-                    height: 200,
-                    child: const Text(
-                      "Sample 1",
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              },
+              childCount: 1,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
