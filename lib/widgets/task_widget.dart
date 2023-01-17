@@ -1,14 +1,33 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:note_app/utils/global_colors.dart';
 
 class TaskWidget extends StatefulWidget {
-  const TaskWidget({super.key});
+  final String title;
+  final String description;
+  final bool isDone;
+
+  const TaskWidget({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.isDone,
+  });
 
   @override
   State<TaskWidget> createState() => _TaskWidgetState();
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
+  var isDone = false;
+
+  @override
+  void initState() {
+    super.initState();
+    isDone = widget.isDone;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,13 +46,14 @@ class _TaskWidgetState extends State<TaskWidget> {
           tileColor: const Color.fromARGB(28, 0, 0, 0),
           textColor: Colors.black,
           iconColor: Colors.white,
-          title: const Text('Task 1'),
-          leading: Radio(
-            value: "Sample",
-            groupValue: "",
-            onChanged: (String? value) {
-              print(value);
-              setState(() {});
+          title: Text(widget.title),
+          leading: Checkbox(
+            checkColor: Colors.white,
+            value: isDone,
+            onChanged: (bool? value) {
+              setState(() {
+                isDone = value!;
+              });
             },
           ),
         ),

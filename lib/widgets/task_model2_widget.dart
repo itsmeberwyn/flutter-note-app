@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 class TaskWidget2 extends StatefulWidget {
@@ -84,7 +86,7 @@ class _TaskWidget2State extends State<TaskWidget2> {
                 value: "Sample",
                 groupValue: "",
                 onChanged: (String? value) {
-                  print(value);
+                  log(value.toString());
                   setState(() {});
                 },
               ),

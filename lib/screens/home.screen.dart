@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:note_app/utils/global_colors.dart';
-import 'package:note_app/widgets/task_model2_widget.dart';
-import 'package:note_app/widgets/task_widget.dart';
+import 'package:get/get.dart';
+import 'package:note_app/controller/dataController.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../widgets/task_widget.dart';
 import 'task.screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,8 +13,25 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  DataController dataController = Get.put(DataController());
+
+  RxBool isLoading = Get.find<DataController>().isLoading;
+  List<dynamic> taskData = [];
+
+  loadData() async {
+    final prefs = await SharedPreferences.getInstance();
+    int userId = prefs.getInt('user_id') ?? 0;
+    await Get.find<DataController>().getData('users/$userId/tasks').then(
+      (value) {
+        taskData = Get.find<DataController>().myData;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    loadData();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
@@ -38,52 +56,27 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: Container(
-        color: Colors.black,
-        child: CustomScrollView(
-          slivers: [
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return Container(
-                    color: Colors.black,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(5),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
-                              TaskWidget2(
-                                backgroundColor: GlobalColors.taskColor,
-                                title: "Plan for today",
-                              ),
-                              TaskWidget2(
-                                backgroundColor: GlobalColors.task2Color,
-                                title: "Plan for tommorow",
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 5),
-                          child: Column(
-                            children: const [
-                              TaskWidget(),
-                              TaskWidget(),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                childCount: 1,
-              ),
-            ),
-          ],
+        decoration: const BoxDecoration(color: Colors.black),
+        child: Obx(
+          () => !isLoading.value
+              ? ListView.builder(
+                  itemCount: taskData.length,
+                  itemBuilder: (context, index) {
+                    return TaskWidget(
+                      title: taskData[index]['title'],
+                      description: taskData[index]['description'],
+                      isDone: taskData[index]['is_done'],
+                    );
+                  },
+                )
+              : Container(
+                  decoration: const BoxDecoration(color: Colors.black),
+                  child: const Text("Loading"),
+                ),
         ),
       ),
     );
   }
 }
+
+// TaskWidget(),

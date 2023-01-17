@@ -1,6 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
+import 'package:get/get.dart';
+import 'package:note_app/controller/dataController.dart';
 import 'package:note_app/screens/home.screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -12,8 +17,15 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool isObscure = true;
 
+  setUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setInt('user_id', 1);
+  }
+
   @override
   Widget build(BuildContext context) {
+    Get.lazyPut(() => DataController());
+
     return Scaffold(
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -124,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
             ),
             InkWell(
               onTap: () {
-                print("Forgot Password");
+                log("Forgot Password");
               },
               child: RichText(
                 text: const TextSpan(
@@ -144,6 +156,7 @@ class _LoginPageState extends State<LoginPage> {
               height: 45,
               child: ElevatedButton(
                 onPressed: () {
+                  setUser();
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (BuildContext context) {
