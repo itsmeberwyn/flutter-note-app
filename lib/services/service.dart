@@ -12,4 +12,15 @@ class DataService extends GetConnect implements GetxService {
     );
     return response;
   }
+
+  Future<Response> postData(String api, dynamic body) async {
+    var url = baseUrl + api;
+    var headers = {'Content-Type': 'application/json; charset=utf-8'};
+    final response = await post(
+      url,
+      body,
+      headers: headers,
+    );
+    return response;
+  }
 }

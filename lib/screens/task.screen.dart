@@ -1,4 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:http/http.dart';
+import 'package:note_app/controller/dataController.dart';
 
 class AddTask extends StatefulWidget {
   final String screenName;
@@ -12,6 +17,9 @@ class AddTask extends StatefulWidget {
 class _AddTaskState extends State<AddTask> {
   late FocusNode focusNode = FocusNode();
   var isDescriptionInputFocus = false;
+
+  TextEditingController taskTitle = TextEditingController();
+  TextEditingController taskDescription = TextEditingController();
 
   @override
   void initState() {
@@ -36,6 +44,16 @@ class _AddTaskState extends State<AddTask> {
     setState(() {});
   }
 
+  void addTask() {
+    Get.find<DataController>()
+        .postData("/users/1/tasks", {
+          "title": taskTitle.text,
+          "description": taskDescription.text,
+        })
+        .then((value) => {log("Successfully Added")})
+        .catchError((onError) => {log(onError)});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,6 +72,10 @@ class _AddTaskState extends State<AddTask> {
             Padding(
               padding: const EdgeInsets.all(10),
               child: TextField(
+                controller: taskTitle,
+                style: const TextStyle(
+                  color: Colors.white,
+                ),
                 decoration: InputDecoration(
                   labelText: "Task title",
                   labelStyle: MaterialStateTextStyle.resolveWith(
@@ -74,6 +96,7 @@ class _AddTaskState extends State<AddTask> {
             Padding(
               padding: const EdgeInsets.all(10),
               child: TextField(
+                controller: taskDescription,
                 focusNode: focusNode,
                 style: const TextStyle(
                   color: Colors.white,
@@ -120,7 +143,7 @@ class _AddTaskState extends State<AddTask> {
                 width: double.maxFinite,
                 height: 45,
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () => addTask(),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.black,
                     backgroundColor: Colors.blue,

@@ -70,6 +70,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 )
               : Container(
+                  height: double.infinity,
+                  width: double.infinity,
                   decoration: const BoxDecoration(color: Colors.black),
                   child: const Text("Loading"),
                 ),

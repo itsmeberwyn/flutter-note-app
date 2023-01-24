@@ -27,4 +27,13 @@ class DataController extends GetxController {
       isDataLoading(false);
     }
   }
+
+  Future<void> postData(String api, dynamic body) async {
+    try {
+      Response response = await service.postData(api, body);
+      log(response.statusCode.toString());
+    } catch (e) {
+      log("an error occurred");
+    }
+  }
 }
